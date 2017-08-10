@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "psychic-order-175711",
+  "private_key_id": "5ebf1707235e9f03c7a2a7183407aca2b2b91d9b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCdhidEEaSlLGj3\nQ9TmLmxqhjgc5rTPHBsCGRBLOMD5AwB9KUdpzJGHSZ9LYo6dQlwx+d5K5PQjqxTj\n4WctQtWV1KKA9iRh4mZ6gX35WPitsD5bQUworBhHxbHC0xMDV3TrYjxg5M1WlvrG\nWgzq2waC5/uJt1iFWuKf3IR8ooRAI79A2nfIla9Oed5lIrjI7pksbLOoXH4ZxR1V\nbUe/IPocZSLE6Z0hGCwnST9spOIeC6klgJWK2VdiS2m0VsTzEtC/J3a0Fpt0ah6Y\nYG18np8J1kyw0ZTD16CTl0f0b/PyhvZ6TL8+a4+b8Qi1a/YVfCaX5fdrUKgBJ3YN\n5VQgHGSdAgMBAAECggEAA8mWtpqE/qqxcGaLXyh1F1+YSEucw9ENbjC7lU9tRl91\n2syMCMVwJ1RUFewt+SaAEHyNRXg5TYU+yJbiE/LEL2jQKnEgoVDf/WiRJpZmzkhL\nS4bnpZ+zqsAcXM6V6bHn4AP55yuBK2iQaYX/QwNWpf2dbOuBX512jvjun4+Jxf/8\nXl1r7bcCUmP/0j8Iytu3iNdSQ68gYXWU3rAi2CrvXoyeWkPUrJTtf/MgG3M3I5Nv\nG8Q8y06d/TarTRk1lmOxFdD3h0p/pBV5dv5y1DZKlLtO+sc5dcUvhj/meybSan2I\nMi+8TR1h6lHCBPTgY/V7/2Yz8UYV5CB2lVPYTsHEAQKBgQDRCEsWZTfxbljuigM3\nWjeCX2TQlxkLNXXDN/Ohep9xD9XEmcSDh1lCkWNX9fjyKt8ayVHDGOLvNPc53ISU\nejamjSezl6ERMOcodO+okKZkyQom0I2BQSOFAk0h8HqX5UBJBpx0rzY3NMTQKIYC\nK+rwb6J8go2gZodhzaDSTqDkAQKBgQDA6w8b/pvrDms6oUTyZt/3O7DpcXV6Breu\nOhFNg4lePidToJ2ykrPkcoBlhaWgnvdR2dT4dEBcQ3qwJRH3Wb5l0VNVaD5QX4R/\nOJ2ECFcjoGJE+TYbOnci7fItpIs4VzRzlG+XtnQsOJlhk/EQ0Rir67a7c4AHH2va\nnGU4pzCQnQKBgDVeBK2nEe1V2uar3b5YDiv+5uJKcV5nO7Wnp0/m2qYnANC84Wsj\nNyrDq7VdWz2YrHVOSM2ioO2pfCUNo9u0iBdlmmlDoR+eeKXflQBYTeMVYL4gKMCD\nPOpMeBzeJK57HTqHsZIo2ZKmqkjqz6vmQok4NyfKvRXil1XlBdYrtPABAoGAPh6y\no9INhNgEwUFSwTdNIQAwjEsDiAKHvOtnzOzxG86pvSz3+ptwn7wbChXJ6nmlq86X\n3FUasFruM7AMI/ja7VBFJDhH8HuBX7HsTqqc3JT1b75LpOLjn/S8yeO1DLRP6HPA\npzqSF/c1tIz9z+t0pU9mbN/ZNvHwOdmoYmC7q6UCgYAxopb4Mkjg+/DpFBkp4p2E\nIjOi/fLhWaRag+SnySdbBxwaK8DM0I1KnEEFxAhL7LGx85Z/UZNy4jc0QCWIOZo0\nycqwyI7gKM6X4/I6BamGOj4cRgGioIApIwGFXcZSI+mHQBdocawnnjviYgULaa2J\nasVPev8TZdKDsLn7lrf7qw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "magicmirroraccount@psychic-order-175711.iam.gserviceaccount.com",
+  "client_id": "109480556647359868266",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/magicmirroraccount%40psychic-order-175711.iam.gserviceaccount.com"
+}

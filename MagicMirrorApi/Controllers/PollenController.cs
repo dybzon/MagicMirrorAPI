@@ -11,7 +11,11 @@ namespace MagicMirrorApi.Controllers
 {
     public class PollenController : ApiController
     {
-        // GET api/pollen
+        /// <summary>
+        /// Get pollen numbers for all available plants and locations
+        /// GET api/pollen
+        /// </summary>
+        /// <returns>A list of pollen numbers</returns>
         [HttpGet]
         public IHttpActionResult GetAllPollen()
         {
@@ -31,7 +35,12 @@ namespace MagicMirrorApi.Controllers
             return Ok(pollen);
         }
 
-        // GET api/pollen/københavn
+        /// <summary>
+        /// Get pollen numbers for all available plants for the specified location
+        /// GET api/pollen/københavn
+        /// </summary>
+        /// <param name="city"></param>
+        /// <returns>A list of pollen numbers</returns>
         [HttpGet]
         public IHttpActionResult GetCityPollen([FromUri] string city)
         {
@@ -51,7 +60,13 @@ namespace MagicMirrorApi.Controllers
             return Ok(pollen);
         }
 
-        // GET api/pollen/københavn/birk
+        /// <summary>
+        /// Get pollen numbers for the specified plant and location
+        /// GET api/pollen/københavn/birk
+        /// </summary>
+        /// <param name="city"></param>
+        /// <param name="plant"></param>
+        /// <returns>A list of pollen numbers</returns>
         [HttpGet]
         public IHttpActionResult GetCityPlantPollen([FromUri] string city, [FromUri] string plant)
         {

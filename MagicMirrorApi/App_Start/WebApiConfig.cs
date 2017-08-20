@@ -28,6 +28,13 @@ namespace MagicMirrorApi
                 defaults: new { controller = "pollen", city = RouteParameter.Optional, plant = RouteParameter.Optional }
             );
 
+            //Force this route for the Weather controller
+            config.Routes.MapHttpRoute(
+                name: "Weather",
+                routeTemplate: "api/weather/{days}",
+                defaults: new { controller = "weather", days = RouteParameter.Optional }
+            );
+
             //Consider reverting to regular routing instead of one route template per controller
             //config.Routes.MapHttpRoute(
             //    name: "PollenApi",

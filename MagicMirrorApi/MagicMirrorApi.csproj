@@ -109,6 +109,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\PollenController.cs" />
+    <Compile Include="Controllers\WeatherController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -118,11 +119,14 @@
     <Compile Include="Logic\IPollenScraper.cs" />
     <Compile Include="Logic\PollenDMI.cs" />
     <Compile Include="Logic\PollenScraper.cs" />
+    <Compile Include="Logic\WeatherHttpConnector.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\GoogleServiceAccount.cs" />
     <Compile Include="Models\IEvent.cs" />
     <Compile Include="Models\IPollenInfo.cs" />
+    <Compile Include="Models\IWeather.cs" />
     <Compile Include="Models\PollenInfo.cs" />
+    <Compile Include="Models\Weather.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

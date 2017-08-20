@@ -11,7 +11,12 @@ namespace MagicMirrorApi.Controllers
 {
     public class CalendarController : ApiController
     {
-        // GET api/calendar/rasmusdybkjaer@gmail.com/
+        /// <summary>
+        /// Get events for the specified calendar
+        /// GET api/calendar/rasmusdybkjaer@gmail.com/
+        /// </summary>
+        /// <param name="calendarId"></param>
+        /// <returns>A list of events</returns>
         [HttpGet]
         public IHttpActionResult GetEventsForCalendar([FromUri] string calendarId)
         {
@@ -25,7 +30,11 @@ namespace MagicMirrorApi.Controllers
             return Ok(events);
         }
 
-        // GET api/calendar/
+        /// <summary>
+        /// Get events for all calendars available in this API
+        /// GET api/calendar/
+        /// </summary>
+        /// <returns>A list of events</returns>
         [HttpGet]
         public IHttpActionResult GetEvents()
         {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MagicMirrorApi.Models;
 
 namespace MagicMirrorApi.Logic
 {
-    public interface IPollenDMI
+    public interface IPollenDmi
     {
         List<PollenInfo> GetDmiAllPollens(string[] relevantCities, string[] relevantPlants);
     }

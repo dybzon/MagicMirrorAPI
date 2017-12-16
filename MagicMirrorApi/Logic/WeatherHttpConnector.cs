@@ -15,51 +15,37 @@ namespace MagicMirrorApi.Logic
         // HttpClient type is created
         // We need two different HttpClients to ensure that calls to the Forecast method and the Current method 
         // do not interfere with each other
-        public static HttpClient CurrentClient { get; private set; }
-        public static HttpClient ForecastClient { get; private set; }
+        private static HttpClient currentClient;
+        private static HttpClient forecastClient;
+        private const string CURRENT_WEATHER_URI = @"http://api.openweathermap.org/data/2.5/weather"; // Base URI for current weather
+        private const string FORECAST_WEATHER_URI = @"http://api.openweathermap.org/data/2.5/forecast"; // Base URI for weather forecast
 
-        public static void InitializeCurrentClient()
+        public static HttpClient CurrentClient
         {
-            if (CurrentClient == null)
+            get
             {
-                CurrentClient = new HttpClient();
-
-                // We always want to receive json
-                CurrentClient.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
+                if (currentClient == null)
+                {
+                    currentClient = new HttpClient();
+                    currentClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    currentClient.BaseAddress = new Uri(CURRENT_WEATHER_URI);
+                }
+                return currentClient;
             }
         }
 
-        public static void InitializeForecastClient()
+        public static HttpClient ForecastClient
         {
-            if (ForecastClient == null)
+            get
             {
-                ForecastClient = new HttpClient();
-
-                // We always want to receive json
-                ForecastClient.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
+                if (forecastClient == null)
+                {
+                    forecastClient = new HttpClient();
+                    forecastClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    forecastClient.BaseAddress = new Uri(FORECAST_WEATHER_URI);
+                }
+                return forecastClient;
             }
         }
-
-        //public static Object GetResult(HttpClient client, string baseUri, string apiParameters)
-        //{
-        //    client.BaseAddress = new Uri(baseUri);
-
-        //    // Get data response
-        //    HttpResponseMessage response = client.GetAsync(apiParameters).Result;  // Blocking call
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        // Parse the response body to an object. We will simply expose everything, and therefore use Object rather than an instance of an inherited class.
-        //        var dataObject = response.Content.ReadAsAsync<Object>().Result;
-        //        return dataObject;
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
-        //        return null;
-        //    }
-
-        //}
     }
 }

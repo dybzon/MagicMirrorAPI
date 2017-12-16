@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 
 namespace MagicMirrorApi
 {
@@ -9,39 +6,14 @@ namespace MagicMirrorApi
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            // Enable CORS. Might not be necessary after all?
+            config.EnableCors();
 
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            //Force this route for the Calendar controller
-            config.Routes.MapHttpRoute(
-                name: "Calendar",
-                routeTemplate: "api/calendar/{calendarId}",
-                defaults: new { controller = "calendar", calendarId = RouteParameter.Optional }
-            );
-
-            //Force this route for the Pollen controller
-            config.Routes.MapHttpRoute(
-                name: "Pollen",
-                routeTemplate: "api/pollen/{city}/{plant}",
-                defaults: new { controller = "pollen", city = RouteParameter.Optional, plant = RouteParameter.Optional }
-            );
-
-            //Force this route for the Weather controller
-            config.Routes.MapHttpRoute(
-                name: "Weather",
-                routeTemplate: "api/weather/{days}",
-                defaults: new { controller = "weather", days = RouteParameter.Optional }
-            );
-
-            //Consider reverting to regular routing instead of one route template per controller
-            //config.Routes.MapHttpRoute(
-            //    name: "PollenApi",
-            //    routeTemplate: "api/{controller}/{city}/{plant}",
-            //    //The city and plant parameters should be optional
-            //    defaults: new { city = RouteParameter.Optional, plant = RouteParameter.Optional }
-            //);
+            // Error policy
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
         }
     }
 }

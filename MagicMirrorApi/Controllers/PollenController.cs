@@ -1,14 +1,11 @@
 ﻿using MagicMirrorApi.Logic;
 using MagicMirrorApi.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;using System.Runtime.InteropServices;
 using System.Web.Http;
 
 namespace MagicMirrorApi.Controllers
 {
+    [RoutePrefix("api/pollen")]
     public class PollenController : ApiController
     {
         /// <summary>
@@ -17,22 +14,19 @@ namespace MagicMirrorApi.Controllers
         /// </summary>
         /// <returns>A list of pollen numbers</returns>
         [HttpGet]
-        public IHttpActionResult GetAllPollen()
+        [Route("")]
+        public IEnumerable<IPollenInfo> GetAllPollen()
         {
-            string pollenSourceUrl = @"http://www.dmi.dk/vejr/sundhedsvejr/pollen/";
-            IPollenDMI pd = new PollenDMI(pollenSourceUrl);
-            IPollenScraper p = new PollenScraper(pd);
-            string[] relevantCities = {"København", "Viborg"};
-            string[] relevantPollens = { "Bynke", "El", "Elm", "Græs", "Birk", "Hassel" };
-            p.SetRelevantPlants(relevantPollens);
-            p.SetRelevantCities(relevantCities);
-            IEnumerable<IPollenInfo> pollen = p.GetPollenInfo();
-
-            if (pollen == null)
+            var pollenSourceUrl = @"http://www.dmi.dk/vejr/sundhedsvejr/pollen/";
+            var pd = new PollenDmi(pollenSourceUrl);
+            var relevantCities = new string[]{"København", "Viborg"};
+            var relevantPollens = new string[]{ "Bynke", "El", "Elm", "Græs", "Birk", "Hassel" };
+            var p = new PollenScraper(pd)
             {
-                return NotFound();
-            }
-            return Ok(pollen);
+                RelevantCities = relevantCities,
+                RelevantPlants = relevantPollens
+            };
+            return p.GetPollenInfo();
         }
 
         /// <summary>
@@ -42,22 +36,19 @@ namespace MagicMirrorApi.Controllers
         /// <param name="city"></param>
         /// <returns>A list of pollen numbers</returns>
         [HttpGet]
-        public IHttpActionResult GetCityPollen([FromUri] string city)
+        [Route("{city}")]
+        public IEnumerable<IPollenInfo> GetCityPollen(string city)
         {
-            string pollenSourceUrl = @"http://www.dmi.dk/vejr/sundhedsvejr/pollen/";
-            IPollenDMI pd = new PollenDMI(pollenSourceUrl);
-            IPollenScraper p = new PollenScraper(pd);
-            string[] relevantCities = { city };
-            string[] relevantPollens = { "Bynke", "El", "Elm", "Græs", "Birk", "Hassel" };
-            p.SetRelevantPlants(relevantPollens);
-            p.SetRelevantCities(relevantCities);
-            IEnumerable<PollenInfo> pollen = p.GetPollenInfo();
-
-            if (pollen == null)
+            var pollenSourceUrl = @"http://www.dmi.dk/vejr/sundhedsvejr/pollen/";
+            var pd = new PollenDmi(pollenSourceUrl);
+            var relevantCities = new string[]{ city };
+            var relevantPollens = new string[] { "Bynke", "El", "Elm", "Græs", "Birk", "Hassel" };
+            var p = new PollenScraper(pd)
             {
-                return NotFound();
-            }
-            return Ok(pollen);
+                RelevantCities = relevantCities,
+                RelevantPlants = relevantPollens
+            };
+            return p.GetPollenInfo();
         }
 
         /// <summary>
@@ -68,41 +59,19 @@ namespace MagicMirrorApi.Controllers
         /// <param name="plant"></param>
         /// <returns>A list of pollen numbers</returns>
         [HttpGet]
-        public IHttpActionResult GetCityPlantPollen([FromUri] string city, [FromUri] string plant)
+        [Route("{city}/{plant}")]
+        public IEnumerable<IPollenInfo> GetCityPlantPollen(string city, string plant)
         {
-            string pollenSourceUrl = @"http://www.dmi.dk/vejr/sundhedsvejr/pollen/";
-            IPollenDMI pd = new PollenDMI(pollenSourceUrl);
-            IPollenScraper p = new PollenScraper(pd);
-            string[] relevantCities = { city };
-            string[] relevantPollens = { plant };
-            p.SetRelevantPlants(relevantPollens);
-            p.SetRelevantCities(relevantCities);
-            IEnumerable<PollenInfo> pollen = p.GetPollenInfo();
-
-            if (pollen == null)
+            var pollenSourceUrl = @"http://www.dmi.dk/vejr/sundhedsvejr/pollen/";
+            var pd = new PollenDmi(pollenSourceUrl);
+            var relevantCities = new string[]{ city };
+            var relevantPollens = new string[]{ plant };
+            var p = new PollenScraper(pd)
             {
-                return NotFound();
-            }
-            return Ok(pollen);
+                RelevantCities = relevantCities,
+                RelevantPlants = relevantPollens
+            };
+            return p.GetPollenInfo();
         }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete]
-        public void Delete(int id)
-        {
-        }
-
     }
 }

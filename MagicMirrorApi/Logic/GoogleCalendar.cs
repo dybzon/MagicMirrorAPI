@@ -2,8 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Security;
+using System.Threading.Tasks;
 using Google.Apis.Calendar.v3;
 using MagicMirrorApi.Models;
 using Newtonsoft.Json;
@@ -12,15 +11,9 @@ namespace MagicMirrorApi.Logic
 {
     public class GoogleCalendar
     {
-        public static List<Event> GetUpcomingCalendarEvents(string serviceAccountEmail, string keyFileName,
+        public static async Task<List<Event>> GetUpcomingCalendarEvents(string serviceAccountEmail, string keyFileName,
             string calendarId, int maxResults)
         {
-            //Sample values:
-            //string serviceAccountEmail = @"magicmirroraccount@psychic-order-175711.iam.gserviceaccount.com";
-            //string keyFileName = "My Project-5ebf1707235e.json";
-            //string calendarId = @"rasmusdybkjaer@gmail.com"; //"primary"
-            //int maxResults = 10;
-
             //The values of the Google Service Account will be read from the .json key file, which should be available to the project
             GoogleServiceAccount keyValues;
 
@@ -41,35 +34,21 @@ namespace MagicMirrorApi.Logic
             request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
             // Execute the request
-            Google.Apis.Calendar.v3.Data.Events events = request.Execute();
-            
+            var events = await request.ExecuteAsync();
+
             //Add the resulting events to a list (split this into a separate method)
-            List<Event> eventList = new List<Event>();
+            var eventList = new List<Event>();
             if (events.Items != null && events.Items.Count > 0)
             {
-                foreach (var eventItem in events.Items)
-                {
-                    Event e = new Event();
-                    string startDate = eventItem.Start.DateTime.ToString(); //Sample date format: 30-08-2017 20:35:00 (dd-mm-yyyy hh:mm:ss)
-                    if (String.IsNullOrEmpty(startDate))
-                    {
-                        startDate = eventItem.Start.Date;
-                    }
-                    e.StartDate = DateTime.ParseExact(startDate, "dd-MM-yyyy HH:mm:ss",
-                        System.Globalization.CultureInfo.InvariantCulture);
-
-                    string endDate = eventItem.End.DateTime.ToString();
-                    if (String.IsNullOrEmpty(endDate))
-                    {
-                        endDate = eventItem.Start.Date;
-                    }
-                    e.EndDate = DateTime.ParseExact(endDate, "dd-MM-yyyy HH:mm:ss",
-                        System.Globalization.CultureInfo.InvariantCulture);
-
-                    e.EventDescription = eventItem.Description;
-                    e.EventSummary = eventItem.Summary;
-                    eventList.Add(e);
-                }
+                eventList = events.Items.Select(i =>
+                       new Event
+                       {
+                           StartDate = i.Start?.DateTime ?? DateTime.MinValue,
+                           EndDate = i.End?.DateTime ?? DateTime.MinValue,
+                           EventDescription = i.Description,
+                           EventSummary = i.Summary
+                       }
+                ).ToList();
             }
             else
             {

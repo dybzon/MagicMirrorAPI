@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MagicMirrorApi.Models
 {
-    interface IEvent
+    public interface IEvent
     {
-
+        DateTime StartDate { get; set; }
+        DateTime EndDate { get; set; }
+        string EventSummary { get; set; }
+        string EventDescription { get; set; }
     }
 }

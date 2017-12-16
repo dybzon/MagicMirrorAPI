@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MagicMirrorApi.Models
 {
-    interface IPollenInfo
+    public interface IPollenInfo
     {
-        void DoStuff();
+        string PlantName { get; set; }
+        string SourceUrl { get; set; }
+        DateTime ObservationTime { get; set; }
+        Int16 PollenLevel { get; set; }
+        string City { get; set; }
+        Int32 Id { get; set; }
     }
 }

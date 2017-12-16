@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace MagicMirrorApi.Models
 {
@@ -28,11 +25,6 @@ namespace MagicMirrorApi.Models
             this.ObservationTime = observationTime;
             this.PollenLevel = pollenLevel;
             this.City = city;
-        }
-
-        public void DoStuff()
-        {
-            //Do stuff
         }
     }
 }

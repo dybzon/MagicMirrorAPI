@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using MagicMirrorApi.Logic;
 using MagicMirrorApi.Models;
 
 namespace MagicMirrorApi.Controllers
 {
+    [RoutePrefix("api/calendar")]
     public class CalendarController : ApiController
     {
         /// <summary>
@@ -18,16 +16,13 @@ namespace MagicMirrorApi.Controllers
         /// <param name="calendarId"></param>
         /// <returns>A list of events</returns>
         [HttpGet]
-        public IHttpActionResult GetEventsForCalendar([FromUri] string calendarId)
+        [Route("{calendarId}")]
+        public async Task<IEnumerable<Event>> GetEventsForCalendar(string calendarId)
         {
-            //string calendarId = @"rasmusdybkjaer@gmail.com"; //"primary"
-            string serviceAccountEmail = @"magicmirroraccount@psychic-order-175711.iam.gserviceaccount.com";
-            string keyFileName = @"C:\Users\rad\Downloads\My Project-5ebf1707235e.json";
-            int maxResults = 10;
-            IEnumerable<Event> events =
-                GoogleCalendar.GetUpcomingCalendarEvents(serviceAccountEmail, keyFileName, calendarId, maxResults);
-
-            return Ok(events);
+            const string serviceAccountEmail = @"magicmirroraccount@psychic-order-175711.iam.gserviceaccount.com";
+            var keyFileName = System.Web.Hosting.HostingEnvironment.MapPath(@"~/My Project-5ebf1707235e.json");
+            const int maxResults = 10;
+            return await GoogleCalendar.GetUpcomingCalendarEvents(serviceAccountEmail, keyFileName, calendarId, maxResults);
         }
 
         /// <summary>
@@ -36,16 +31,14 @@ namespace MagicMirrorApi.Controllers
         /// </summary>
         /// <returns>A list of events</returns>
         [HttpGet]
-        public IHttpActionResult GetEvents()
+        [Route]
+        public async Task<IEnumerable<Event>> GetEvents()
         {
-            string calendarId = @"rasmusdybkjaer@gmail.com"; //"primary"
-            string serviceAccountEmail = @"magicmirroraccount@psychic-order-175711.iam.gserviceaccount.com";
-            string keyFileName = @"C:\Users\rad\Downloads\My Project-5ebf1707235e.json";
-            int maxResults = 10;
-            IEnumerable<Event> events =
-                GoogleCalendar.GetUpcomingCalendarEvents(serviceAccountEmail, keyFileName, calendarId, maxResults);
-
-            return Ok(events);
+            const string calendarId = @"rasmusdybkjaer@gmail.com"; //"primary"
+            const string serviceAccountEmail = @"magicmirroraccount@psychic-order-175711.iam.gserviceaccount.com";
+            var keyFileName = System.Web.Hosting.HostingEnvironment.MapPath(@"~/My Project-5ebf1707235e.json");
+            const int maxResults = 10;
+            return await GoogleCalendar.GetUpcomingCalendarEvents(serviceAccountEmail, keyFileName, calendarId, maxResults);
         }
     }
 }

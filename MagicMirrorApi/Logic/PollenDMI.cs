@@ -3,18 +3,15 @@ using MagicMirrorApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace MagicMirrorApi.Logic
 {
-    public class PollenDMI : IPollenDMI
+    public class PollenDmi : IPollenDmi
     {
         private string SourceUrl { get; set; }
-        private string connectionString = @"Data Source=rad-laptop\LOCALHOST2016;Initial Catalog=MagicMirror;Integrated Security=true";
-        public PollenDMI(string sourceUrl)
+        //private string connectionString = @"Data Source=rad-laptop\LOCALHOST2016;Initial Catalog=MagicMirror;Integrated Security=true";
+        public PollenDmi(string sourceUrl)
         {
             this.SourceUrl = sourceUrl;
         }
@@ -67,6 +64,7 @@ namespace MagicMirrorApi.Logic
             var scrapedPollens = new List<PollenInfo>();
             var trNodes = bodyNode.SelectNodes("./tr");
             int counter = 0;
+
             //Loop through each row inside the table node
             foreach (HtmlNode trNode in trNodes)
             {
@@ -75,7 +73,6 @@ namespace MagicMirrorApi.Logic
                     //If the row contains relevant pollen information, then we will include it in the list of Pollen objects
                     if (IncludesRelevantPollenInfo(trNode, relevantPlants))
                     {
-                        //Break the following into a seperate private PollenInfo GetPollenInfoFromNode(HtmlNode trNode){}
                         scrapedPollens.Add(GetPollenInfoFromNode(trNode, city, counter, observationTime, relevantPlants));
                     }
                     counter++;
@@ -84,102 +81,37 @@ namespace MagicMirrorApi.Logic
             return scrapedPollens;
         }
 
-        private bool IsPollenUpdated()
-        {
-            bool isUpdated = false;
-            //Get the maximum timestamp from the database and check whether this is older than 1 hour. If not, return true.
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                // Create the Command and Parameter objects.
-                SqlCommand command = new SqlCommand("MM.GetUpdateStatus", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@SourceUrl", this.SourceUrl);
-
-                // Open the connection in a try/catch block. 
-                // Create and execute the DataReader, writing the result
-                // set to the console window.
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        isUpdated = reader.GetBoolean(0);
-                    }
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            return isUpdated;
-        }
-
-        private void SavePollenInfoToDatabase(IEnumerable<PollenInfo> pollenInfoList)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    foreach (PollenInfo p in pollenInfoList)
-                    {
-                        // Create the Command and Parameter objects.
-                        SqlCommand command = new SqlCommand("MM.SavePollenInfo", connection);
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@PlantName", p.PlantName);
-                        command.Parameters.AddWithValue("@SourceUrl", p.SourceUrl);
-                        command.Parameters.AddWithValue("@ObservationTime", p.ObservationTime);
-                        command.Parameters.AddWithValue("@PollenLevel", p.PollenLevel);
-                        command.Parameters.AddWithValue("@City", p.City);
-
-                        //Attempt to save the PollenInfo to the database
-                        command.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-
-        }
         public List<PollenInfo> GetDmiAllPollens(string[] relevantCities, string[] relevantPlants)
         {
-            //Check whether DmiPollen was already fetched within the last hour
-            //Move this to a separate method
-            if (IsPollenUpdated())
-            {
-                //Get data from database rather than scraping it
-                //Return data from database
-                //Write a function here that gets the latest relevant pollen info from the database (is this even feasible compared to 
-                //scraping it from the website again? We will use less bandwidth, but we have to communicate with the database instead.
-                //What is the best way to do this?)
-                Console.WriteLine("Pollen is already up to date");
-            }
-
             var scrapedPollens = new List<PollenInfo>();
             var getHtmlWeb = new HtmlWeb();
             var document = getHtmlWeb.Load(this.SourceUrl);
             DateTime observationTime = DateTime.Now;
             var tableNodes = document.DocumentNode.SelectNodes("//table");
 
-            //We want to find the two tables that contain København and Viborg, and add these table elements to a list
-            foreach (HtmlNode tableNode in tableNodes)
-            {
-                if (tableNode.SelectNodes("./tr/th") != null)
+            //We want to find the table nodes that contain pollen info, and scrape the info from there
+            tableNodes.Where(e => e.SelectNodes("./tr/th") != null).ToList()
+                .ForEach(tableNode =>
                 {
-                    HtmlNode thNode = tableNode.SelectNodes("./tr/th")[0];
+                    HtmlNode thNode = tableNode.SelectNodes("./tr/th").FirstOrDefault();
                     if (relevantCities.Any(thNode.InnerHtml.ToLower().Equals)) //Check whether the table contains values for one of the relevant cities
                     {
                         scrapedPollens.AddRange(GetInnerPollenInfo(thNode.InnerHtml, tableNode, observationTime, relevantPlants));
                     }
-                }
-            }
+                });
 
-            //Write DMI values to the database
-            SavePollenInfoToDatabase(scrapedPollens);
+            ////We want to find the two tables that contain København and Viborg, and add these table elements to a list
+            //foreach (HtmlNode tableNode in tableNodes)
+            //{
+            //    if (tableNode.SelectNodes("./tr/th") != null)
+            //    {
+            //        HtmlNode thNode = tableNode.SelectNodes("./tr/th")[0];
+            //        if (relevantCities.Any(thNode.InnerHtml.ToLower().Equals)) //Check whether the table contains values for one of the relevant cities
+            //        {
+            //            scrapedPollens.AddRange(GetInnerPollenInfo(thNode.InnerHtml, tableNode, observationTime, relevantPlants));
+            //        }
+            //    }
+            //}
 
             //Return
             return scrapedPollens;
